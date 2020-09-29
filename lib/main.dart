@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frugal_flights/screens/posts.dart';
+import 'package:frugal_flights/screens/flights.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: PostsPage(),
+      home: FlightsPage(),
     );
   }
 }
