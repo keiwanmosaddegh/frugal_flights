@@ -11,11 +11,10 @@ class APIService {
     "country":"SE",
     "locale":"sv-SE",
     "originplace":"CPH-sky",
-    "outboundpartialdate":"2020-10-01",
-    "inboundpartialdate":"2020-10-27",
+    "outboundpartialdate":"2020-11-03",
+    "inboundpartialdate":"2020-11-27",
     "destinationplace":"AGP-sky"
   };
-
 
   static const Map<String, String> _headers = {
     "content-type": "application/json",
@@ -34,6 +33,39 @@ class APIService {
     } else {
       throw Exception('Failed to load json data');
     }
+  }
+
+  Future<List<Quote>> getAllFlights({Map<String, String> query}) async {
+    Map<String, String> qs = query ?? queries;
+    List<Quote> allQuotes = [];
+
+    DateTime now = DateTime.now();
+    DateTime apiCallDate = new DateTime(now.year, now.month, now.day + 1);
+    for (var i = 1; i <= 12; i++) {
+      // Retrieve the year, month, day from apiCallDate
+      int year = apiCallDate.year;
+      String month = apiCallDate.month.toString().padLeft(2, "0");
+      String day = apiCallDate.day.toString().padLeft(2, "0");
+
+      //Parse the correct date to add into the url, to avoid to many loose variables inside the complete string
+      String urlDate = "$year-$month-$day";
+      String url = Uri.encodeFull("https://$_apiHost/$_apiEndpoint/${qs["country"]}/${qs["currency"]}/${qs["locale"]}/${qs["originplace"]}/${qs["destinationplace"]}/$urlDate/$urlDate");
+      Response response = await get(url, headers: _headers);
+
+      if (response.statusCode == 200) {
+        print("API Call #$i");
+        List<dynamic> body = jsonDecode(response.body)["Quotes"];
+        List<Quote> quotes = body.map((dynamic item) => Quote.fromJson(item)).toList();
+        allQuotes.addAll(quotes);
+      } else {
+        print("Failed to load json data");
+        throw Exception('Failed to load json data');
+      }
+
+      // Increase the month by 1, and fetch the next set of flights.
+      apiCallDate = new DateTime(apiCallDate.year, apiCallDate.month + 1, apiCallDate.day);
+    }
+    return allQuotes;
   }
 }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frugal_flights/screens/flights.dart';
+import 'package:frugal_flights/common/constants.dart';
+import 'package:frugal_flights/screens/homepage/flights.dart';
+import 'package:frugal_flights/view_models/flights_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,11 +13,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: kBackgroundColor,
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
       ),
       debugShowCheckedModeBanner: false,
-      home: FlightsPage(),
+      home: ChangeNotifierProvider(
+          create: (BuildContext context) => FlightsProvider(),
+          child: FlightsPage(),
+      ),
     );
   }
 }

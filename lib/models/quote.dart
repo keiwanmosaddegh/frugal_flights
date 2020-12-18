@@ -20,7 +20,7 @@ class Quote {
 
   factory Quote.fromJson(Map<String, dynamic> json) => Quote(
     quoteId: json["QuoteId"],
-    minPrice: json["MinPrice"],
+    minPrice: json["MinPrice"].toDouble(),
     direct: json["Direct"],
     outboundLeg: Leg.fromJson(json["OutboundLeg"]),
     inboundLeg: Leg.fromJson(json["InboundLeg"]),
