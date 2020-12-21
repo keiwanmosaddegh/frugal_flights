@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:frugal_flights/models/quote.dart';
 import 'package:frugal_flights/services/api_service.dart';
+import 'package:frugal_flights/services/database.dart';
 
 // ALL IN ALL
 // 1. Create a View Model for each Screen
 // 2. Let class extend ChangeNotifier
 // 3. And then simply call notifyListener() whenever you need to update the UI
 
-class FlightsProvider extends ChangeNotifier {
+class HomepageViewModel extends ChangeNotifier {
   List<Quote> quotes = List<Quote>();
   bool isLoading = false;
   int minPrice = 2000;
